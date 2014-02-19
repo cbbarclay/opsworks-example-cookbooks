@@ -1,5 +1,15 @@
 node[:deploy].each do |app_name, deploy|
 
+  script "install_composer" do
+    interpreter "bash"
+    user "root"
+    cwd "#{deploy[:deploy_to]}/current"
+    code <<-EOH
+    curl -sS https://getcomposer.org/installer | php
+    php composer.phar install --no-dev
+    EOH
+  end
+
   template "#{deploy[:deploy_to]}/current/db-connect.php" do
     source "db-connect.php.erb"
     mode 0660
@@ -16,8 +26,7 @@ node[:deploy].each do |app_name, deploy|
       :user =>     (deploy[:database][:username] rescue nil),
       :password => (deploy[:database][:password] rescue nil),
       :db =>       (deploy[:database][:database] rescue nil),
-      :table =>    (deploy[:database][:table] rescue nil),
-      :s3bucket => (node[:photobucket] rescue nil)
+      :table =>    (node[:phpapp][:dbtable] rescue nil)
     )
 
    only_if do
