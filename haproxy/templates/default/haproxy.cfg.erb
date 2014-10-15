@@ -44,7 +44,6 @@ listen mysql-cluster
     mode tcp
     option mysql-check user haproxy_check
     balance roundrobin
-    node[:opsworks][:stack][:rds_instances].each do
-      server mysql-1 10.0.0.1:3306 check
-      server mysql-2 10.0.0.2:3306 check
-    end
+    <% node[:opsworks][:stack][:rds_instances].each do |instance| %>
+      server <% instance[:address] 10.0.0.1:3306 check
+    <% end %>
