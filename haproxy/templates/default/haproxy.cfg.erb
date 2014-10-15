@@ -45,5 +45,5 @@ listen mysql-cluster
     option mysql-check user haproxy_check
     balance roundrobin
     <% node[:opsworks][:stack][:rds_instances].each do |instance| %>
-      server <% instance[:address]:3306 check
+      server <%= instance[:address] %>:3306 check
     <% end %>
