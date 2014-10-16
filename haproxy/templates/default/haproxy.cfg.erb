@@ -13,7 +13,7 @@ defaults
 listen mysql-cluster
     bind 127.0.0.1:3306
     mode tcp
-#    option mysql-check user haproxy_check
+    option mysql-check user haproxy_check
     balance roundrobin
     <% node[:opsworks][:stack][:rds_instances].each do |instance| %>
     server <%= instance[:db_instance_identifier] %> <%= instance[:address] %>:3306 check
