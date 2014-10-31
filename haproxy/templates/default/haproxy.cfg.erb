@@ -1,5 +1,5 @@
 global
-    log 127.0.0.1 local0 notice
+    log <% node[:opsworks][:instance][:private_ip] %> local0 notice
     user haproxy
     group haproxy
 
@@ -16,6 +16,6 @@ listen mysql-cluster
     option mysql-check user haproxy_check
     balance roundrobin
     <% node[:opsworks][:stack][:rds_instances].each do |instance| %>
-    server <%= instance[:db_instance_identifier] %> <%= instance[:address] %>:3306 check
+    server <%= instance[:db_instance_identifier] %> <%= instance[:private_ip] %>:3306 check
     <% end %>
 
