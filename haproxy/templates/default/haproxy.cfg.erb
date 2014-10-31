@@ -11,11 +11,11 @@ defaults
     timeout client 5000
         
 listen mysql-cluster
-    bind :3306
+    bind node[:opsworks][:instance][:private_ip]:3306
     mode tcp
     option mysql-check user haproxy_check
     balance roundrobin
     <% node[:opsworks][:stack][:rds_instances].each do |instance| %>
-    server <%= instance[:db_instance_identifier] %> <%= node[:opsworks][:instance][:private_ip] %>:3306 check
+    server <%= instance[:db_instance_identifier] %> <%= instance[:address] %>:3306 check
     <% end %>
 
