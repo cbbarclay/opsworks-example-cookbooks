@@ -1,5 +1,5 @@
 global
-    log <% node[:opsworks][:instance][:private_ip] %> local0 notice
+    log <%= node[:opsworks][:instance][:private_ip] %> local0 notice
     user haproxy
     group haproxy
 
@@ -11,7 +11,7 @@ defaults
     timeout client 5000
         
 listen mysql-cluster
-    bind node[:opsworks][:instance][:private_ip]:3306
+    bind <%= node[:opsworks][:instance][:private_ip] %>:3306
     mode tcp
     option mysql-check user haproxy_check
     balance roundrobin
